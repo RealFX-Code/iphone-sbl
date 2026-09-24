@@ -11,7 +11,7 @@ OBJCOPY		= $(CROSS_COMPILE)objcopy
 OBJDUMP		= $(CROSS_COMPILE)objdump
 READELF		= $(CROSS_COMPILE)readelf
 STRIP		= $(CROSS_COMPILE)strip
-CFLAGS 		:= -Wall -nostdlib -static \
+CFLAGS 		:= -Wall -nostdlib -static -ffreestanding -nostartfiles \
 				-Os -std=gnu99 -Ttext=0x0 -mlittle-endian \
 				-mfpu=vfp -mthumb -mthumb-interwork -fPIC \
 				-mcpu=cortex-a8 -Wno-error -Wno-array-bounds \
@@ -20,7 +20,9 @@ CFLAGS 		:= -Wall -nostdlib -static \
 				-Wno-unused-const-variable -Wno-unused-function \
 				-Wno-unused-variable -Wno-maybe-uninitialized \
 				-Wno-address -Wno-bool-compare -Wno-logical-not-parentheses \
-				-Wno-format-overflow \
+				-Wno-format-overflow
+
+LDFLAGS		:= -Wl,-Ttext=0x41010000 -Wl,-e,_start
 
 # path macros
 SRC_PATH	:= src
@@ -31,7 +33,7 @@ TARGET_BIN	:= $(TARGET_NAME).bin
 
 # src files & obj files
 #SRC := $(foreach x, $(SRC_PATH), $(wildcard $(addprefix $(x)/*,.c*)))
-SRC := main.c
+SRC := start.s main.c lib.c
 
 # Add platform-specific code
 SRC += plat/$(PLAT).c
@@ -40,6 +42,7 @@ CFLAGS += -Isrc
 CFLAGS += -Isrc/plat
 
 OBJ := $(patsubst %.c,src/%.o,$(SRC))
+OBJ := $(patsubst %.s,src/%.o,$(OBJ))
 
 # clean files list
 DISTCLEAN_LIST 	:= $(OBJ)
@@ -54,7 +57,7 @@ default: all
 
 # non-phony targets
 $(TARGET_ELF): $(OBJ)
-	$(CC) -o $@ $(OBJ) $(CFLAGS)
+	$(CC) -o $@ $(OBJ) $(CFLAGS) $(LDFLAGS)
 
 $(TARGET_BIN): $(TARGET_ELF)
 	$(OBJCOPY) -O binary $< $@

@@ -4,7 +4,6 @@
  *
  */
 
-#include <string.h>
 
 #define FRAMEBUFFER_ADDRESS 0x4FD00000;
 
