@@ -6,7 +6,7 @@
 
 /* Here we define platform-specific constants */
 
-#define FRAMEBUFFER_ADDRESS 0x4FD00000
+#define FRAMEBUFFER_ADDRESS 0x4FE3A000
 
 /* These are stolen from openIBoot's plat-s5l8920/includes/hardware/s5l8920.h */
 

@@ -11,16 +11,14 @@
 volatile unsigned int *framebuffer = (volatile unsigned int *)FRAMEBUFFER_ADDRESS;
 
 void plat_init(void) {
-	int i;
-
-	// Fill first 4k of the framebuffer to see what happens.
-	// Fills 1024 blocks of 4-byte words
-	for (i = 0; i < 1024; i++ ){
-		framebuffer[i] = 0xFFFFFFFF;
-	}
-
+    volatile unsigned int *fb = (volatile unsigned int *)0x4fe3a000;
+    for (int i = 0; i < 320 * 480; i++) {
+        fb[i] = 0xFFFFFFFF;
+    }
+    while (1) { __asm__("wfi"); }
 	return;
 }
+
 
 void plat_exit(void) {
 	return;

@@ -3,6 +3,7 @@
 
 .arm
 .global _start
+.section .text.boot
 _start:
     // The apple bootloader will ALWAYS load our binary at an 8-byte aligned offset.
     // So the program counter will always be 8-byte aligned and at a valid ram offset at boot.
@@ -13,6 +14,15 @@ _start:
     // This disables all interrups, except for aborts. We want those.
     // Also sets the CPU into Supervisor mode.
     cpsid   if, #0b10011
+
+    // Zero BSS
+    ldr     r0, =_bss_start
+    ldr     r1, =_bss_end
+    mov     r2, #0
+zerobss:
+    cmp     r0, r1
+    strb    r2, [r0]
+    blo     zerobss
 
     // Jump 2 main
     bl      main

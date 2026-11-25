@@ -25,7 +25,7 @@ CFLAGS := -mlittle-endian -mfpu=vfp -mthumb \
 
 ifeq ($(PLAT), 3gs)
     CFLAGS   += -mcpu=cortex-a8
-    LOAD_ADDR := 0x41000000
+    LOAD_ADDR := 0x40000000
 else ifeq ($(PLAT), 4)
     CFLAGS   += -mcpu=cortex-a8
     LOAD_ADDR := 0x41000000
@@ -37,7 +37,7 @@ else
 endif
 
 
-LDFLAGS := $(PLAT_FLAGS) -nostdlib -Wl,-Ttext=$(LOAD_ADDR) -Wl,-e,_start
+LDFLAGS := $(PLAT_FLAGS) -nostdlib -Wl,-Ttext=$(LOAD_ADDR) -Wl,-e,_start -Wl,-T,src/linker.ld
 
 # Set up includes
 CFLAGS += -Isrc
@@ -50,6 +50,7 @@ SRC_PATH	:= src
 TARGET_NAME 	:= iphone-sbl
 TARGET_ELF	:= $(TARGET_NAME).elf
 TARGET_BIN	:= $(TARGET_NAME).bin
+TARGET_IMG3	:= $(TARGET_NAME).img3
 
 # src files & obj files
 #SRC := $(foreach x, $(SRC_PATH), $(wildcard $(addprefix $(x)/*,.c*)))
@@ -80,6 +81,9 @@ $(TARGET_ELF): $(OBJ)
 $(TARGET_BIN): $(TARGET_ELF)
 	$(OBJCOPY) -O binary $< $@
 
+$(TARGET_IMG3): $(TARGET_BIN)
+	python3 mkimg3.py $< $@
+
 %.o: %.S*
 	$(CC) $(COBJFLAGS) -o $@ $<
 
@@ -88,7 +92,7 @@ $(TARGET_BIN): $(TARGET_ELF)
 
 # phony rules
 .PHONY: all
-all: $(TARGET_ELF) $(TARGET_BIN)
+all: $(TARGET_ELF) $(TARGET_BIN) $(TARGET_IMG3)
 
 .PHONY: clean
 clean:
