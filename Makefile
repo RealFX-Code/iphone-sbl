@@ -11,34 +11,36 @@ OBJCOPY		= $(CROSS_COMPILE)objcopy
 OBJDUMP		= $(CROSS_COMPILE)objdump
 READELF		= $(CROSS_COMPILE)readelf
 STRIP		= $(CROSS_COMPILE)strip
-# CFLAGS 		:= -Wall -static -ffreestanding -nostartfiles \
-# 				-Os -std=gnu99 -Ttext=0x0 -mlittle-endian \
-# 				-mfpu=vfp -mthumb -mthumb-interwork -fPIC \
-# 				-mcpu=cortex-a8 -Wno-error -Wno-array-bounds \
-# 				-Wno-unused-value -Wno-unused-but-set-variable \
-# 				-Wno-misleading-indentation -Wno-address-of-packed-member \
-# 				-Wno-unused-const-variable -Wno-unused-function \
-# 				-Wno-unused-variable -Wno-maybe-uninitialized \
-# 				-Wno-address -Wno-bool-compare -Wno-logical-not-parentheses \
-# 				-Wno-format-overflow
-# 
-# LDFLAGS		:= -Wl,-Ttext=0x0 -Wl,-e,_start -nostdlib
 
 CFLAGS := -mlittle-endian -mfpu=vfp -mthumb \
-		-mthumb-interwork -fPIC -mcpu=cortex-a8 -Wno-error \
+		-mthumb-interwork -fPIC -Wno-error \
 		-Wno-array-bounds -Wno-unused-value -Wno-unused-but-set-variable \
 		-Wno-misleading-indentation -Wno-address-of-packed-member \
 		-Wno-unused-const-variable -Wno-unused-function \
 		-Wno-unused-variable -Wno-maybe-uninitialized \
 		-Wno-address -Wno-bool-compare -Wno-logical-not-parentheses \
-		-Wno-format-overflow -nostdlib
+		-Wno-format-overflow -nostdlib -ffreestanding -fno-builtin
 
-LDFLAGS := $(PLAT_FLAGS) -nostdlib -Ttext=0x0
+ifeq ($(PLAT), 3gs)
+    CFLAGS   += -mcpu=cortex-a8
+    LOAD_ADDR := 0x41000000
+else ifeq ($(PLAT), 4)
+    CFLAGS   += -mcpu=cortex-a8
+    LOAD_ADDR := 0x41000000
+else ifneq ($(filter $(PLAT), 2g 3g),)
+    CFLAGS   += -mcpu=arm1176jzf-s
+    LOAD_ADDR := 0x09000000
+else
+    $(error Unknown PLAT '$(PLAT)'. Use 2g, 3g, 3gs, or 4)
+endif
+
+
+LDFLAGS := $(PLAT_FLAGS) -nostdlib -Wl,-Ttext=$(LOAD_ADDR) -Wl,-e,_start
 
 # Set up includes
-CFLAGS += -Isrc/plat/$(PLAT)
 CFLAGS += -Isrc
 CFLAGS += -Isrc/plat
+CFLAGS += -Isrc/plat/$(PLAT)
 
 # path macros
 SRC_PATH	:= src
@@ -49,14 +51,14 @@ TARGET_BIN	:= $(TARGET_NAME).bin
 
 # src files & obj files
 #SRC := $(foreach x, $(SRC_PATH), $(wildcard $(addprefix $(x)/*,.c*)))
-SRC := start.s main.c lib.c
+SRC := start.S main.c lib.c
 
 # Add platform-specific code
-SRC += plat/$(PLAT)/plat.c
+SRC += plat/$(PLAT)/$(PLAT).c
 CFLAGS += -DPLAT_$(PLAT)
 
 OBJ := $(patsubst %.c,src/%.o,$(SRC))
-OBJ := $(patsubst %.s,src/%.o,$(OBJ))
+OBJ := $(patsubst %.S,src/%.o,$(OBJ))
 
 # clean files list
 DISTCLEAN_LIST 	:= $(OBJ)
@@ -76,7 +78,7 @@ $(TARGET_ELF): $(OBJ)
 $(TARGET_BIN): $(TARGET_ELF)
 	$(OBJCOPY) -O binary $< $@
 
-%.o: %.s*
+%.o: %.S*
 	$(CC) $(COBJFLAGS) -o $@ $<
 
 %.o: %.c*
