@@ -6,9 +6,9 @@
 .arm
 .global _start
 _start:
-    @ The apple bootloader will ALWAYS load our binary at an 8-byte aligned offset.
+    @ The apple bootloader will ALWAYS load our binary at an 8-byte aligned offset.
     @ So the program counter will always be 8-byte aligned and at a valid ram offset at boot.
-    @ So we repurpose it to derive a valid stack pointer location.
+    @ So we repurpose it to derive a valid stack pointer location.
     mov     sp, pc
     add     sp, sp, #0x100000
 
