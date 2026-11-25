@@ -11,18 +11,34 @@ OBJCOPY		= $(CROSS_COMPILE)objcopy
 OBJDUMP		= $(CROSS_COMPILE)objdump
 READELF		= $(CROSS_COMPILE)readelf
 STRIP		= $(CROSS_COMPILE)strip
-CFLAGS 		:= -Wall -nostdlib -static -ffreestanding -nostartfiles \
-				-Os -std=gnu99 -Ttext=0x0 -mlittle-endian \
-				-mfpu=vfp -mthumb -mthumb-interwork -fPIC \
-				-mcpu=cortex-a8 -Wno-error -Wno-array-bounds \
-				-Wno-unused-value -Wno-unused-but-set-variable \
-				-Wno-misleading-indentation -Wno-address-of-packed-member \
-				-Wno-unused-const-variable -Wno-unused-function \
-				-Wno-unused-variable -Wno-maybe-uninitialized \
-				-Wno-address -Wno-bool-compare -Wno-logical-not-parentheses \
-				-Wno-format-overflow
+# CFLAGS 		:= -Wall -static -ffreestanding -nostartfiles \
+# 				-Os -std=gnu99 -Ttext=0x0 -mlittle-endian \
+# 				-mfpu=vfp -mthumb -mthumb-interwork -fPIC \
+# 				-mcpu=cortex-a8 -Wno-error -Wno-array-bounds \
+# 				-Wno-unused-value -Wno-unused-but-set-variable \
+# 				-Wno-misleading-indentation -Wno-address-of-packed-member \
+# 				-Wno-unused-const-variable -Wno-unused-function \
+# 				-Wno-unused-variable -Wno-maybe-uninitialized \
+# 				-Wno-address -Wno-bool-compare -Wno-logical-not-parentheses \
+# 				-Wno-format-overflow
+# 
+# LDFLAGS		:= -Wl,-Ttext=0x0 -Wl,-e,_start -nostdlib
 
-LDFLAGS		:= -Wl,-Ttext=0x41010000 -Wl,-e,_start
+CFLAGS := -mlittle-endian -mfpu=vfp -mthumb \
+		-mthumb-interwork -fPIC -mcpu=cortex-a8 -Wno-error \
+		-Wno-array-bounds -Wno-unused-value -Wno-unused-but-set-variable \
+		-Wno-misleading-indentation -Wno-address-of-packed-member \
+		-Wno-unused-const-variable -Wno-unused-function \
+		-Wno-unused-variable -Wno-maybe-uninitialized \
+		-Wno-address -Wno-bool-compare -Wno-logical-not-parentheses \
+		-Wno-format-overflow -nostdlib
+
+LDFLAGS := $(PLAT_FLAGS) -nostdlib -Ttext=0x0
+
+# Set up includes
+CFLAGS += -Isrc/plat/$(PLAT)
+CFLAGS += -Isrc
+CFLAGS += -Isrc/plat
 
 # path macros
 SRC_PATH	:= src
@@ -36,10 +52,8 @@ TARGET_BIN	:= $(TARGET_NAME).bin
 SRC := start.s main.c lib.c
 
 # Add platform-specific code
-SRC += plat/$(PLAT).c
+SRC += plat/$(PLAT)/plat.c
 CFLAGS += -DPLAT_$(PLAT)
-CFLAGS += -Isrc
-CFLAGS += -Isrc/plat
 
 OBJ := $(patsubst %.c,src/%.o,$(SRC))
 OBJ := $(patsubst %.s,src/%.o,$(OBJ))

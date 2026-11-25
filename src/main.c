@@ -1,4 +1,4 @@
-#include <plat/plat.h>
+#include <plat.h>
 
 int main() {	
 	plat_init();

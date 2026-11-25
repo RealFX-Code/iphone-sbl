@@ -1,17 +1,23 @@
 @ Startup for iphone-sbl
 
+@ Include hardware constants!
+#include "plat.h"
+
+@ General startup stuff
 .global _start
 _start:
-    @ Set up our processor.
-    @ This disables interrupts, (except for aborts), and sets our CPU to hypervisor mode.
-    cpsid if, #0x13
+    @ This disables all interrups, except for aborts. We want those.
+    @ Also sets the CPU into Supervisor mode.
+    @ cpsid if, #0x13
+    ORR	R1, R0,	#0x13
+	MSR	CPSR_c,	R1
     
     @ Set our stack pointer
-    ldr sp, =0x4101F000 
+    LDR SP, =#0x27ffc
     
     @ Jump 2 main
-    bl main
+    BL main
     
     @ Hang if we're here. Something went wrong!
-1:  wfi
-    b 1b
+HangLoop:  WFI
+    B HangLoop
