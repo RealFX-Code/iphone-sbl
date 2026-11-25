@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2026 Leah
 
 ifndef PLAT
   $(error set PLAT to your platform. e.g. 3gs)

@@ -1,5 +1,10 @@
 # iphone-sbl
 
+```
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Leah
+```
+
 A small, wip secondary bootloader for older iphones.
 
 My only device that I can test / develop for is the iPhone 3GS
