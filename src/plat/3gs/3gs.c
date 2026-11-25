@@ -11,11 +11,11 @@
 volatile unsigned int *framebuffer = (volatile unsigned int *)FRAMEBUFFER_ADDRESS;
 
 void plat_init(void) {
-    volatile unsigned int *fb = (volatile unsigned int *)0x4fe3a000;
-    for (int i = 0; i < 320 * 480; i++) {
-        fb[i] = 0xFFFFFFFF;
-    }
-    while (1) { __asm__("wfi"); }
+	volatile unsigned int *fb = (volatile unsigned int *)0x4fe3a000;
+	for (int i = 0; i < 320 * 480; i++) {
+		fb[i] = 0xFFFFFFFF;
+	}
+	while (1) { __asm__("wfi"); }
 	return;
 }
 
