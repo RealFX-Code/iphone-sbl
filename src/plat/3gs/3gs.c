@@ -1,11 +1,9 @@
 
 /*
  *	Platform specific code for iPhone 3GS
- *
  */
 
-
-#define FRAMEBUFFER_ADDRESS 0x4FD00000;
+#include <3gs.h>
 
 // Framebuffer in memory
 volatile unsigned int *framebuffer = (volatile unsigned int *)FRAMEBUFFER_ADDRESS;

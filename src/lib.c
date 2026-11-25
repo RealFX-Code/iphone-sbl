@@ -1,6 +1,6 @@
 
-#include "lib.h"
-#include <stdint.h>
+#include <lib.h>
+#include <types.h>
 
 void hang(void) {
     // Disable interrups, we don't want to wake after this!
