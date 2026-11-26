@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2026 Leah 
+# Made with assistance of clanger
+
 import struct, sys
 
 data = open(sys.argv[1], "rb").read()

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Leah
 
 #ifndef __FRAMEBUFFER_H
 #define __FRAMEBUFFER_H
