@@ -5,6 +5,10 @@ ifndef PLAT
   $(error set PLAT to your platform. e.g. 3gs)
 endif
 
+ifndef FONT
+	FONT := 8x8
+endif
+
 CC		= $(CROSS_COMPILE)gcc
 LD		= $(CROSS_COMPILE)ld
 AR		= $(CROSS_COMPILE)ar
@@ -40,9 +44,7 @@ endif
 LDFLAGS := $(PLAT_FLAGS) -nostdlib -Wl,-Ttext=$(LOAD_ADDR) -Wl,-e,_start -Wl,-T,src/linker.ld
 
 # Set up includes
-CFLAGS += -Isrc
-CFLAGS += -Isrc/plat
-CFLAGS += -Isrc/plat/$(PLAT)
+CFLAGS += -Isrc/include
 
 # path macros
 SRC_PATH	:= src
@@ -54,7 +56,9 @@ TARGET_IMG3	:= $(TARGET_NAME).img3
 
 # src files & obj files
 #SRC := $(foreach x, $(SRC_PATH), $(wildcard $(addprefix $(x)/*,.c*)))
-SRC := start.S main.c lib.c
+SRC := start.S lib/arm/memchr.S lib/arm/memset.S main.c lib.c lib/framebuffer/framebuffer.c lib/libc/string.c
+
+CFLAGS += -DFONT_$(FONT)
 
 # Add platform-specific code
 SRC += plat/$(PLAT)/$(PLAT).c
@@ -67,6 +71,7 @@ OBJ := $(patsubst %.S,src/%.o,$(OBJ))
 DISTCLEAN_LIST 	:= $(OBJ)
 CLEAN_LIST 	:= $(TARGET_ELF) \
 		$(TARGET_BIN) \
+		$(TARGET_IMG3) \
 		$(DISTCLEAN_LIST)
 
 COBJFLAGS       := $(CFLAGS) -c

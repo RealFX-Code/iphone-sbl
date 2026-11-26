@@ -5,8 +5,8 @@
 #define __PLAT_H
 
 // Include platform-dependant stuff
-#ifdef PLAT_3GS
-    #include "3gs/3gs.h"
+#ifdef PLAT_3gs
+    #include <plat/3gs/3gs.h>
 #endif
 
 void plat_init(void);

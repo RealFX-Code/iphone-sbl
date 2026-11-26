@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Leah
 
-#include <plat.h>
+#include <plat/plat.h>
 
 int main() {	
 	plat_init();

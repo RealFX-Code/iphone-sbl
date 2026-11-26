@@ -2,7 +2,8 @@
 // Copyright (C) 2026 Leah
 
 #include <lib.h>
-#include <types.h>
+#include <plat/plat.h>
+#include <stdint.h>
 
 void hang(void) {
     // Disable interrups, we don't want to wake after this!
