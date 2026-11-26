@@ -19,7 +19,7 @@ READELF		= $(CROSS_COMPILE)readelf
 STRIP		= $(CROSS_COMPILE)strip
 
 CFLAGS := -mlittle-endian -mfpu=vfp -mthumb \
-		-mthumb-interwork -fPIC -Wno-error \
+		-mthumb-interwork -fPIC -Wno-error -lgcc \
 		-Wno-array-bounds -Wno-unused-value -Wno-unused-but-set-variable \
 		-Wno-misleading-indentation -Wno-address-of-packed-member \
 		-Wno-unused-const-variable -Wno-unused-function \
