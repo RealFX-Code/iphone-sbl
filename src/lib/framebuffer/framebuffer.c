@@ -18,6 +18,9 @@
 
 #define FONT_SIZE 1
 
+static int cursor_x = 0;
+static int cursor_y = 0;
+
 void fb_pixel(int x, int y, int  color) {
     int location = y*FRAMEBUFFER_X+x;
     if (location > FRAMEBUFFER_X*FRAMEBUFFER_Y) {
@@ -31,11 +34,8 @@ void fb_pixel(int x, int y, int  color) {
 void fb_puts(int x, int y, char *str, int color) {
 	size_t len = strlen(str);
 	int i;
-    int fb_x = x;
-    int fb_y = y;
 	for(i = 0; i < len; i++) {
-		fb_putc(fb_x, fb_y, str[i], color);
-        fb_x += fb_get_char_width() + 1;
+		fb_putc(0, 0, str[i], color);
 	}
 }
 
@@ -52,18 +52,25 @@ void fb_putc(int x, int y, char c, int color) {
             if (line & (1 << col)) {
                 for (int sy = 0; sy < scale; sy++) {
                     for (int sx = 0; sx < scale; sx++) {
-                        fb_pixel(x + (col * scale) + sx, y + (row * scale) + sy, color);
+                        fb_pixel(cursor_x + (col * scale) + sx, cursor_y + (row * scale) + sy, color);
                     }
                 }
             } else {
                 for (int sy = 0; sy < scale; sy++) {
                     for (int sx = 0; sx < scale; sx++) {
-                        fb_pixel(x + (col * scale) + sx, y + (row * scale) + sy, 0x00000000);
+                        fb_pixel(cursor_x + (col * scale) + sx, cursor_y + (row * scale) + sy, 0x00000000);
                     }
                 }
             }
         }
     }
+
+    cursor_x += fb_get_char_width()
+    if (cursor_x + fb_get_char_width() > FRAMEBUFFER_X) {
+        cursor_x = 0;
+        cursor_y += fb_get_char_height() + 4;
+    }
+
 }
 #else /* FONT_8x8 */
 void fb_putc(int x, int y, char c, int color) {
@@ -79,17 +86,22 @@ void fb_putc(int x, int y, char c, int color) {
             if (line & (1 << (7 - col))) {
                 for (int sy = 0; sy < scale; sy++) {
                     for (int sx = 0; sx < scale; sx++) {
-                        fb_pixel(x + (col * scale) + sx, y + (row * scale) + sy, color);
+                        fb_pixel(cursor_x + (col * scale) + sx, cursor_y + (row * scale) + sy, color);
                     }
                 }
             } else {
                 for (int sy = 0; sy < scale; sy++) {
                     for (int sx = 0; sx < scale; sx++) {
-                        fb_pixel(x + (col * scale) + sx, y + (row * scale) + sy, 0x00000000);
+                        fb_pixel(cursor_x + (col * scale) + sx, cursor_y + (row * scale) + sy, 0x00000000);
                     }
                 }
             }
         }
+    }
+    cursor_x += fb_get_char_width();
+    if (cursor_x + fb_get_char_width() > FRAMEBUFFER_X) {
+        cursor_x = 0;
+        cursor_y += fb_get_char_height() + 4;
     }
 }
 #endif /* FONT_8x8 */

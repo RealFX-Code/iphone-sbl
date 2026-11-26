@@ -4,6 +4,8 @@
 #ifndef __LIB_H
 #define __LIB_H
 
+int fb_printf(const char* fmt, ...);
+
 void hang(void);
 void panic(const char *msg);
 

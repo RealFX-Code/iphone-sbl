@@ -7,7 +7,7 @@
 
 #include <plat/3gs/3gs.h>
 #include <testing/image.h>
-
+#include <lib.h>
 #include <lib/framebuffer.h>
 
 void draw_boot_image(void) {
@@ -29,10 +29,16 @@ void draw_boot_image(void) {
 void plat_init(void) {
 	volatile unsigned int *framebuffer = (volatile unsigned int *)FRAMEBUFFER_ADDRESS;
 	
+    for( int i = 0; i < FRAMEBUFFER_X * FRAMEBUFFER_Y; i++) {
+        framebuffer[i] = 0x00000000;
+    }
+
     draw_boot_image();
 
+    fb_printf("Framebuffer: 0x%x\n", framebuffer);
+
     for(int i = 0; i < 50; i++) {
-        fb_puts(0, i * fb_get_char_height(), "Hello, World!!", 0xFFFFFFFF);
+        fb_puts(0, (5 + i) * fb_get_char_height(), "Hello, World!!", 0xFFFFFFFF);
     }
 
 	return;
