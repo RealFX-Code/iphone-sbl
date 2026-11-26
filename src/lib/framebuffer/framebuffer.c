@@ -54,6 +54,12 @@ void fb_putc(int x, int y, char c, int color) {
                         fb_pixel(x + (col * scale) + sx, y + (row * scale) + sy, color);
                     }
                 }
+            } else {
+                for (int sy = 0; sy < scale; sy++) {
+                    for (int sx = 0; sx < scale; sx++) {
+                        fb_pixel(x + (col * scale) + sx, y + (row * scale) + sy, 0x00000000);
+                    }
+                }
             }
         }
     }
