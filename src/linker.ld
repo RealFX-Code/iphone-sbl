@@ -1,6 +1,7 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2026 Leah
-/* linker.ld */
+/* SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) 2026 Leah
+ * linker.ld
+ */
 ENTRY(_start)
 
 SECTIONS
