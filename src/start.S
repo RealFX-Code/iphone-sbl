@@ -18,11 +18,9 @@ _start:
     // Zero BSS
     ldr     r0, =_bss_start
     ldr     r1, =_bss_end
-    mov     r2, #0
-zerobss:
-    cmp     r0, r1
-    strb    r2, [r0]
-    blo     zerobss
+    sub     r2, r1, r0
+    mov     r1, #0
+    bl     memset
 
     // Jump 2 main
     bl      main

@@ -26,4 +26,9 @@
 #define GeneralStack (PageTable - 4)
 #define HeapStart (LargeMemoryStart + 0x02000000)
 
+#define BUTTONS_VOLUP       0x1600
+#define BUTTONS_VOLDOWN     0x1601
+#define BUTTONS_HOME        0x1606
+#define BUTTONS_HOLD        0x1607
+
 #endif /* __3GS_H */

@@ -19,7 +19,7 @@ READELF		= $(CROSS_COMPILE)readelf
 STRIP		= $(CROSS_COMPILE)strip
 
 CFLAGS := -mlittle-endian -mfpu=vfp -mthumb \
-		-mthumb-interwork -fPIC -Wno-error \
+		-mthumb-interwork -fPIC -Wno-error -lgcc \
 		-Wno-array-bounds -Wno-unused-value -Wno-unused-but-set-variable \
 		-Wno-misleading-indentation -Wno-address-of-packed-member \
 		-Wno-unused-const-variable -Wno-unused-function \
@@ -56,7 +56,7 @@ TARGET_IMG3	:= $(TARGET_NAME).img3
 
 # src files & obj files
 #SRC := $(foreach x, $(SRC_PATH), $(wildcard $(addprefix $(x)/*,.c*)))
-SRC := start.S lib/arm/memchr.S lib/arm/memset.S main.c lib.c lib/framebuffer/framebuffer.c lib/libc/string.c
+SRC := start.S lib/arm/memchr.S lib/arm/memset.S main.c lib.c lib/framebuffer/framebuffer.c lib/libc/string.c lib/framebuffer/framebuffer_font8x8.c
 
 CFLAGS += -DFONT_$(FONT)
 
