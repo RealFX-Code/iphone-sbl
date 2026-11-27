@@ -9,7 +9,7 @@
 #include <lib/npf_config.h>
 #include <stdarg.h>
 
-void fb_putc_callback(int c, void *ctx) {
+static void fb_putc_callback(int c, void *ctx) {
     (void)ctx;
     fb_putc(c);
 }

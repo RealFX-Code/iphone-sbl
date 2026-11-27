@@ -53,6 +53,8 @@ void plat_init(void) {
         4, 32
     );
 
+    fb_printf("Hello, World! From printf!\n");
+
     for(;;) {
         if (!buttons_is_pushed(BUTTONS_HOME))
             fb_print(".");
