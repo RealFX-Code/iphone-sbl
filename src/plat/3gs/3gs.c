@@ -6,27 +6,13 @@
  */
 
 #include <plat/3gs/3gs.h>
-#include <testing/image.h>
+#include <testing/hellokitty.h>
 #include <lib/framebuffer.h>
 #include <lib/mem.h>
 #include <lib.h>
 #include <stdint.h>
 
-int buttons_is_pushed(int which) {
-    uint8_t pin = which & 0x7;
-	which = which >> 8;
-
-	if (which == 0x2e) {
-		return 0;
-	}
-	
-    // GPIO bank for 3gs is 0x83000000
-    uint32_t reg_val = readl(0x83000000 + (8 * which + pin) * sizeof(uint32_t));
-    return !(reg_val & 1);
-}
-
-
-
+#if 0
 void draw_boot_image(void) {
     volatile unsigned int *fb = (volatile unsigned int *)FRAMEBUFFER_ADDRESS;
     const char *data = header_data;
@@ -41,10 +27,10 @@ void draw_boot_image(void) {
               |  (unsigned int)pixel[2];
     }
 }
+#endif
 
 
 void plat_init(void) {
-    draw_boot_image();
 
     fb_init(
         (uint32_t *)FRAMEBUFFER_ADDRESS,
@@ -53,15 +39,8 @@ void plat_init(void) {
         4, 32
     );
 
-    fb_printf("Hello, World! From printf!\n");
-
-    for(;;) {
-        if (!buttons_is_pushed(BUTTONS_HOME))
-            fb_print(".");
-
-        if (!buttons_is_pushed(BUTTONS_HOLD))
-            break;
-    }
+    fb_clear(0x00000000);
+    fb_printf("Framebuffer initialized.\n");
 
 	return;
 }

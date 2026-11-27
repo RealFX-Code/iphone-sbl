@@ -6,9 +6,16 @@
 
 /* Here we define platform-specific constants */
 
+#define PLATFORM_NAME "iPhone 3GS"
+
 #define FRAMEBUFFER_ADDRESS 0x4FE3A000
 #define FRAMEBUFFER_X       320
 #define FRAMEBUFFER_Y       480
+
+#define BUTTONS_VOLUP       0x1600
+#define BUTTONS_VOLDOWN     0x1601
+#define BUTTONS_HOME        0x1606
+#define BUTTONS_HOLD        0x1607
 
 /* These are stolen from openIBoot's plat-s5l8920/includes/hardware/s5l8920.h */
 
@@ -25,10 +32,5 @@
 #define PageTable (RAMEnd - 0x8000)
 #define GeneralStack (PageTable - 4)
 #define HeapStart (LargeMemoryStart + 0x02000000)
-
-#define BUTTONS_VOLUP       0x1600
-#define BUTTONS_VOLDOWN     0x1601
-#define BUTTONS_HOME        0x1606
-#define BUTTONS_HOLD        0x1607
 
 #endif /* __3GS_H */

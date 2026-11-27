@@ -54,11 +54,7 @@ void panic(const char *msg) {
     crash_log[1] = current_sp;
     crash_log[2] = current_lr;
 
-    fb_print("\n");
-    fb_print(__func__);
-    fb_print(": ");
-    fb_print(msg);
-    fb_print("\n");
+    fb_printf("\n%s: %s\n", __func__, msg);
 
     hang(); 
 }

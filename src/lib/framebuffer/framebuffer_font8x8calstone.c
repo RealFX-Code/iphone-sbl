@@ -6,8 +6,9 @@
 // Code License: AGPL-3.0-or-later
 //
 
-#pragma once
-static const int font_data[96][8] = {
+#include <lib/framebuffer.h>
+
+static const uint8_t font8x8_calstone_data[96][8] = {
     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },  //
     { 0x18, 0x18, 0x18, 0x18, 0x18, 0x00, 0x18, 0x18 },  // !
     { 0x66, 0xee, 0xcc, 0x00, 0x00, 0x00, 0x00, 0x00 },  // "
@@ -105,3 +106,28 @@ static const int font_data[96][8] = {
     { 0x36, 0x7e, 0x6c, 0x00, 0x00, 0x00, 0x00, 0x00 },  // ~
     { 0x3c, 0x66, 0xdb, 0xb1, 0xb1, 0xdb, 0x66, 0x3c }   // ©
 };
+
+void fb_char(uint32_t x, uint32_t y, char c, uint32_t color) {
+    int index = c - 32;
+    if (index < 0 || index >= 96) return;
+    
+    uint32_t scale = fb_get_text_scale();
+    
+    for (int row = 0; row < 8; row++) {
+        uint8_t line = font8x8_calstone_data[index][row];
+        for (int col = 0; col < 8; col++) {
+            if (line & (1 << (7 - col))) {
+                fb_fill_rect(x + (col * scale), y + (row * scale), scale, scale, color);
+            } else {
+                fb_fill_rect(x + (col * scale), y + (row * scale), scale, scale, 0x00000000);
+            }
+        }
+    }
+}
+uint32_t fb_get_char_width(void) {
+    return 8 * fb_get_text_scale();
+}
+
+uint32_t fb_get_char_height(void) {
+    return 8 * fb_get_text_scale();
+}

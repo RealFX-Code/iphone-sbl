@@ -1,19 +1,8 @@
 
-
 #include <lib/framebuffer.h>
 #include <plat/plat.h>
 #include <lib/string.h>
 #include <stdint.h>
-
-#ifdef FONT_8x8
-    #include "fonts/font_8x8.h"
-#elif FONT_calstone
-    #include "fonts/font_calstone.h"
-#elif FONT_comicsans
-    #include "fonts/font_comicsans.h"
-#else
-    #error Invalid font!
-#endif
 
 static fb_config_t fb_config = {0};
 

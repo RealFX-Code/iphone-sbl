@@ -6,8 +6,9 @@
 // Code License: AGPL-3.0-or-later
 //
 
-#pragma once
-static const int font_data[96][8] = {
+#include <lib/framebuffer.h>
+
+static const uint8_t font8x8_comic_fans_data[96][8] = {
     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },  //
     { 0x08, 0x08, 0x08, 0x10, 0x10, 0x00, 0x30, 0x00 },  // !
     { 0x66, 0x88, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },  // "
@@ -105,3 +106,38 @@ static const int font_data[96][8] = {
     { 0x00, 0x14, 0x28, 0x00, 0x00, 0x00, 0x00, 0x00 },  // ~
     { 0x1c, 0x22, 0x49, 0x95, 0xa1, 0x99, 0x42, 0x3c }   // ©
 };
+
+void fb_char(uint32_t x, uint32_t y, char c, uint32_t color) {
+    int index = c - 32;
+    
+    if (index < 0 || index >= 96) return;
+    
+    uint32_t scale = fb_get_text_scale();
+    
+    for (int row = 0; row < 8; row++) {
+        uint8_t line = font8x8_comic_fans_data[index][row];
+        for (int col = 0; col < 8; col++) {
+            if (line & (1 << (7 - col))) {
+                for (uint32_t sy = 0; sy < scale; sy++) {
+                    for (uint32_t sx = 0; sx < scale; sx++) {
+                        fb_pixel(x + (col * scale) + sx, y + (row * scale) + sy, color);
+                    }
+                }
+            } else {
+                for (uint32_t sy = 0; sy < scale; sy++) {
+                    for (uint32_t sx = 0; sx < scale; sx++) {
+                        fb_pixel(x + (col * scale) + sx, y + (row * scale) + sy, 0x00000000);
+                    }
+                }
+            }
+        }
+    }
+}
+
+uint32_t fb_get_char_width(void) {
+    return 8 * fb_get_text_scale();
+}
+
+uint32_t fb_get_char_height(void) {
+    return 8 * fb_get_text_scale();
+}

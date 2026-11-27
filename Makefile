@@ -56,9 +56,22 @@ TARGET_IMG3	:= $(TARGET_NAME).img3
 
 # src files & obj files
 #SRC := $(foreach x, $(SRC_PATH), $(wildcard $(addprefix $(x)/*,.c*)))
-SRC := start.S lib/arm/memchr.S lib/arm/memset.S main.c lib.c lib/framebuffer/framebuffer.c lib/libc/string.c lib/framebuffer/framebuffer_font8x8.c
+SRC := start.S lib/arm/memchr.S lib/arm/memset.S main.c lib.c lib/framebuffer/framebuffer.c lib/libc/string.c
 
 CFLAGS += -DFONT_$(FONT)
+
+ifeq ($(FONT), calstone)
+SRC += lib/framebuffer/framebuffer_font8x8calstone.c
+else ifeq ($(FONT), comicfans)
+SRC += lib/framebuffer/framebuffer_font8x8comicfans.c
+else ifeq ($(FONT), 8x8)
+SRC += lib/framebuffer/framebuffer_font8x8.c
+else
+$(error INVALID FONT. Choose between: 8x8, calstone, and comicfans.)
+endif
+
+all:
+	@echo "Building with $(FONT) font"
 
 # Add platform-specific code
 SRC += plat/$(PLAT)/$(PLAT).c
@@ -70,6 +83,9 @@ OBJ := $(patsubst %.S,src/%.o,$(OBJ))
 # clean files list
 DISTCLEAN_LIST 	:= $(OBJ)
 CLEAN_LIST 	:= $(TARGET_ELF) \
+		src/lib/framebuffer/framebuffer_font8x8calstone.o \
+		src/lib/framebuffer/framebuffer_font8x8comicfans.o \
+		src/lib/framebuffer/framebuffer_font8x8.o \
 		$(TARGET_BIN) \
 		$(TARGET_IMG3) \
 		$(DISTCLEAN_LIST)
