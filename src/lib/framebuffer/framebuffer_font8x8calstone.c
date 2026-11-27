@@ -3,7 +3,7 @@
 // Font Copyright: (c) 1988-2025 Damien Guard
 // Font: Comic Fans font by DamienG https://damieng.com/zx-origins
 // Font License: Custom - see https://damieng.com/zx-origins for terms
-// Code License: AGPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 //
 
 #include <lib/framebuffer.h>

@@ -1,7 +1,10 @@
-//
-// SPDX-FileCopyrightText: 2025 Roger Ortiz <roger@r0rt1z2.com>
-// SPDX-License-Identifier: AGPL-3.0-or-later
-//
+/*
+ *  SPDX-License-Identifier: AGPL-3.0-or-later
+ *  SPDX-FileCopyrightText: 2025 Roger Ortiz <roger@r0rt1z2.com>
+ *  SPDX-FileCopyrightText: 2026 Leah <leah@realfx.rocks>
+ *
+ *  Loads of code stolen from Kaeru: https://github.com/R0rt1z2/kaeru
+ */
 
 #pragma once
 

@@ -1,5 +1,7 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2026 Leah
+/*
+ *  SPDX-License-Identifier: GPL-3.0-or-later
+ *  SPDX-FileCopyrightText: 2026 Leah <leah@realfx.rocks>
+ */
 
 #ifndef __PLAT_H
 #define __PLAT_H

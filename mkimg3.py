@@ -1,3 +1,10 @@
+#   
+#   SPDX-License-Identifier: GPL-3.0-or-later
+#   SPDX-FileCopyrightText: 2026 Leah <leah@realfx.rocks>
+#   
+#   With help from clanker
+#
+
 import struct, sys
 
 data = open(sys.argv[1], "rb").read()

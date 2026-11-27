@@ -1,3 +1,7 @@
+/*
+ *  SPDX-License-Identifier: GPL-3.0-or-later
+ *  SPDX-FileCopyrightText: 2026 Leah <leah@realfx.rocks>
+ */
 /*  GIMP header image file format (RGB): /home/leah/hugedisk/mainline/iphone3gs/iphone-sbl/src/include/testing/image.h  */
 
 static unsigned int width = 320;
