@@ -47,16 +47,22 @@ void hang(void) {
 }
 
 void panic(const char *msg) {
-    register uint32_t current_sp __asm__("sp");
-    register uint32_t current_lr __asm__("lr");
-    
+    register uint32_t sp __asm__("sp");
+    register uint32_t lr __asm__("lr");
+    register uint32_t fp __asm__("fp");
+
     // Keep this address in mind!
     uint32_t *crash_log = (uint32_t *)0x4101F000; 
     crash_log[0] = 0xBADDBABE; // bad babe :drooling:
-    crash_log[1] = current_sp;
-    crash_log[2] = current_lr;
+    crash_log[1] = sp;
+    crash_log[2] = lr;
+    crash_log[3] = fp;
 
     fb_printf("\n%s: %s\n", __func__, msg);
+    fb_printf(" >>> Crashdump = 0x%lx\n", crash_log);
+    fb_printf(" >>> SP = 0x%x (0x%x)\n", sp, crash_log[1]);
+    fb_printf(" >>> LR = 0x%x (0x%x)\n", lr, crash_log[2]);
+    fb_printf(" >>> FP = 0x%x (0x%x)\n", fp, crash_log[3]);
 
     hang(); 
 }

@@ -35,5 +35,5 @@ _hang: wfi
     b       _hang
 
 panic_str:
-    .asciz "main() somehow returned."
+    .asciz "main() returned."
     .align 2

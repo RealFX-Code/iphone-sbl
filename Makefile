@@ -70,9 +70,6 @@ else
 $(error INVALID FONT. Choose between: 8x8, calstone, and comicfans.)
 endif
 
-all:
-	@echo "Building with $(FONT) font"
-
 # Add platform-specific code
 SRC += plat/$(PLAT)/$(PLAT).c
 CFLAGS += -DPLAT_$(PLAT)
